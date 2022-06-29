@@ -1,8 +1,11 @@
 import collections
 import numpy as np
 import pandas as pd
+import re
 from numpy import dot
 from numpy.linalg import norm
+
+from model.Persona import BasePersona
 
 def word2vec(word):
     prefix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -29,3 +32,10 @@ def cosine_matches(df_ruv: pd.DataFrame, pattern: str):
     vecpattern = word2vec(pattern)
     innermask = df_ruv.NAMES_VEC.apply(lambda x:cosine_difference(x, vecpattern))
     return innermask.nlargest(1)
+
+def prediction(df_ruv: pd.DataFrame, persona: BasePersona):
+    concat_name2 = (persona.name1 + persona.name2 + persona.surname1 + persona.surname2).upper()
+    concat_name2 = re.sub(r'[^A-ZÑ]', '', concat_name2)
+    concat_name2 = re.sub(r'[Ñ]', 'N', concat_name2)
+    matches = cosine_matches(df_ruv, concat_name2)
+    return matches

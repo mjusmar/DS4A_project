@@ -1,10 +1,11 @@
 import uvicorn
 from io import BytesIO
 from fastapi import FastAPI, UploadFile
+import pandas as pd
 
-from datasource import DataLoader
+from datasource.DataLoader import DataLoader, init_dataset
 from model.Persona import *
-from test import *
+from measures.Measure import prediction
 
 # proxy=""
 # service_prefix = os.getenv('JUPYTERHUB_SERVICE_PREFIX')
@@ -34,7 +35,7 @@ async def structured_search(persona: BasePersona):
     @params person: structured data of a person
     @returns: Search results of the fuzzy search over a threshold
     """
-    matches = prediction(DataLoader.df_ruv, DataLoader.df_val, persona)
+    matches = prediction(DataLoader.df_ruv, persona)
     return {"matches" : matches}
 
 @app.post('/batch')
