@@ -3,7 +3,7 @@ from fastapi import Form
 
 class BasePersona(BaseModel):
     id:         int 
-    name:       str 
+    name1:       str 
     name2:      str 
     surname1:   str 
     surname2:   str 

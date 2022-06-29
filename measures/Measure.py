@@ -1,39 +1,31 @@
 import collections
 import numpy as np
+import pandas as pd
+from numpy import dot
+from numpy.linalg import norm
 
 def word2vec(word):
-    prefix = "ABCDEFGHIJKLMNOPQRSTUVXYZ"
+    prefix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     # Count the number of characters in each word.
-    count_characters = collections.Counter(prefix+word)
-    base_characters = collections.Counter(prefix)
+    count_characters = collections.Counter(prefix+word)    
+    count_characters.subtract(collections.Counter(prefix))
     
-    count_characters.subtract(base_characters)
-    
-
     # Gets the set of characters and calculates the "length" of the vector.
     set_characters = set(count_characters)
 
-    length = np.sqrt(sum(c*c for c in count_characters.values()))
+    # Frobenius vectorial norm using numpy library
+    length = np.linalg.norm(tuple(count_characters.values()))  
 
-    return count_characters, set_characters, length, word
+    return np.array(list(count_characters.values()))#.reshape(1, -1) #, set_characters, length, word
 
-def cosine_similarity(vector1, vector2, ndigits):
-    
-    # Get the common characters between the two character sets
-    common_characters = vector1[1].intersection(vector2[1])
 
-    # Sum of the product of each intersection character.
-    product_summation = sum(vector1[0][character] * vector2[0][character] for character in common_characters)
+def cosine_difference(vector1, vector2):
+    if (vector1.any() and vector2.any()):        
+        return dot(vector1, vector2)/(norm(vector1)*norm(vector2)).sum()
+    return 0
 
-    # Gets the length of each vector from the word2vec output.
-    length = vector1[2] * vector2[2]
-
-    # Calculates cosine similarity and rounds the value to ndigits decimal places.
-    if length == 0:
-        # Set value to 0 if word is empty.
-        similarity = 0
-    else:
-        similarity = round(product_summation/length, ndigits)
-
-    return similarity
+def cosine_matches(df_ruv: pd.DataFrame, pattern: str):
+    vecpattern = word2vec(pattern)
+    innermask = df_ruv.NAMES_VEC.apply(lambda x:cosine_difference(x, vecpattern))
+    return innermask.nlargest(1)
