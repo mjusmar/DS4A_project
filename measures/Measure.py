@@ -57,10 +57,10 @@ def cosine_matches(df_ruv: pd.DataFrame, pattern: str):
     return results.join(df_ruv)
 
 def phonetic_difference(per:BasePersona, pattern:str):
-    phname1 = phn.metaphone(per.name1)
-    phname2 = phn.metaphone(per.name2)
-    phsurname1 = phn.metaphone(per.surname1)
-    phsurname2 = phn.metaphone(per.surname2)
+    phname1 = re.sub(r'[AEIOU]', '', phn.metaphone(per.name1))
+    phname2 = re.sub(r'[AEIOU]', '', phn.metaphone(per.name2))
+    phsurname1 = re.sub(r'[AEIOU]', '', phn.metaphone(per.surname1))
+    phsurname2 = re.sub(r'[AEIOU]', '', phn.metaphone(per.surname2))
     return (bool(re.search(phname1, pattern)) + bool(re.search(phname2, pattern)) + bool(re.search(phsurname1, pattern)) + bool(re.search(phsurname2, pattern)))/4
     
 def phonetic_matches(df_ruv: pd.DataFrame, persona:BasePersona):
