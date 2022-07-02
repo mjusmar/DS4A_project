@@ -31,11 +31,24 @@ def cosine_difference(vector1, vector2):
 def cosine_matches(df_ruv: pd.DataFrame, pattern: str):
     vecpattern = word2vec(pattern)
     innermask = df_ruv.NAMES_VEC.apply(lambda x:cosine_difference(x, vecpattern))
-    return innermask.nlargest(1)
+    return innermask.nlargest(5).sort()
+
+def clean_input(input_name: str):
+    val_accents = {r'Á' : 'A',
+                   r'É' : 'E', 
+                   r'Í' : 'I',
+                   r'Ó' : 'O', 
+                   r'Ú' : 'U', 
+                   r'Ü' : 'U', 
+                   r'Ñ' : 'N'}
+    for key, val in val_accents.items():
+        if re.search(key, input_name):
+            input_name = re.sub(key, val, input_name)
+    input_name = re.sub(r'[^A-Z]', '', input_name)
+    return input_name
 
 def prediction(df_ruv: pd.DataFrame, persona: BasePersona):
     concat_name2 = (persona.name1 + persona.name2 + persona.surname1 + persona.surname2).upper()
-    concat_name2 = re.sub(r'[^A-ZÑ]', '', concat_name2)
-    concat_name2 = re.sub(r'[Ñ]', 'N', concat_name2)
+    concat_name2 = clean_input(concat_name2)
     matches = cosine_matches(df_ruv, concat_name2)
     return matches
