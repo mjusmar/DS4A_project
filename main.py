@@ -19,7 +19,6 @@ app = FastAPI(title='Test', description='API test', version= '1.0.1')
 async def startup_event():
     DataLoader.df_ruv = init_dataset(DataLoader.df_ruv)
     DataLoader.df_val = init_dataset(DataLoader.df_val)
-    print('init')
     # print(DataLoader.df_ruv.head())
 
 

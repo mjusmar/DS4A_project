@@ -1,7 +1,14 @@
 import pandas as pd
 
 def remove_accents(df_clean:pd.DataFrame):
-    val_accents = {r'' : 'A',
+    val_accents = {r'Á' : 'A',
+                   r'É' : 'E', 
+                   r'Í' : 'I',
+                   r'Ó' : 'O', 
+                   r'Ú' : 'U', 
+                   r'Ü' : 'U', 
+                   r'Ñ' : 'N',
+                   r'' : 'A',
                    r'' : 'E', 
                    r'' : 'I',
                    r'¡' : 'I', 

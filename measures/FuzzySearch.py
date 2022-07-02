@@ -7,6 +7,7 @@ def populate(df_res: pd.DataFrame):
     results = []
     for index, row in df_res.iterrows():
         person = {
+                    'cedula':row['DOC_RUV'],
                     'nombre1':row['NOM1'],
                     'nombre2':row['NOM2'],
                     'apellido1':row['APE1'],
