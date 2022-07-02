@@ -5,7 +5,7 @@ import pandas as pd
 
 from datasource.DataLoader import DataLoader, init_dataset
 from model.Persona import *
-from measures.Measure import prediction
+from measures.FuzzySearch import prediction
 
 # proxy=""
 # service_prefix = os.getenv('JUPYTERHUB_SERVICE_PREFIX')
