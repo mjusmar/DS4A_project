@@ -1,6 +1,6 @@
 import pandas as pd
 import phonetics as phn
-from measures.Measure import *
+from measures.Measure import word2vec
 
 def concat_name(df: pd.DataFrame):
     df["FULLNAME"] = df["NOM1"]+df["NOM2"]+df["APE1"]+df["APE2"]
