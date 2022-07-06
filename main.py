@@ -35,7 +35,7 @@ async def structured_search(persona: BasePersona):
     @returns: Search results of the fuzzy search over a threshold
     """
     matches = prediction(DataLoader.df_ruv, persona)
-    return {"matches" : matches}
+    return  matches
 
 @app.post('/batch')
 async def batch_search(csv: UploadFile):
