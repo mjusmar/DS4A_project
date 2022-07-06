@@ -12,12 +12,16 @@ def populate(df_res: pd.DataFrame):
                     'nombre2':row['NOM2'],
                     'apellido1':row['APE1'],
                     'apellido2':row['APE2'],
-                    'coseno':row['COS'],
-                    'fonetica':row['PHN']
+                    'puntaje':row['COS'],
+                    'fonetica':row['PHN'],
+                    'puntaje_total':row['COS']*row['PHN']
                     }
         results.append(person)
     return results
 
+def order_by_phonetic(results):
+    results = sorted(results, key=lambda k: k['puntaje_total'], reverse=True)
+    return results
 
 def prediction(df_ruv: pd.DataFrame, persona: BasePersona):
     persona = clean_input(persona)
@@ -25,4 +29,5 @@ def prediction(df_ruv: pd.DataFrame, persona: BasePersona):
     matches = cosine_matches(df_ruv, concat_name2)
     matches = phonetic_matches(matches, persona)
     results = populate(matches)
-    return results
+    results_order = order_by_phonetic(results)
+    return results_order
