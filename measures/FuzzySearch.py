@@ -12,9 +12,9 @@ def populate(df_res: pd.DataFrame):
                     'nombre2':row['NOM2'],
                     'apellido1':row['APE1'],
                     'apellido2':row['APE2'],
-                    'puntaje':row['COS'],
-                    'fonetica':row['PHN'],
-                    'puntaje_total':row['COS']*row['PHN']
+                    'puntaje': round(row['COS'],2),
+                    'fonetica':round(row['PHN'],2),
+                    'puntaje_total':round(row['COS']*row['PHN'],2)
                     }
         results.append(person)
     return results
